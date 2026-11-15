@@ -1,141 +1,159 @@
-<p align="center">
-  <img src="docs/assets/banner.svg" alt="QueryMind — Your data. In plain English." width="100%">
-</p>
+# QueryMind
 
-<p align="center">
-  <a href="https://github.com/Saksham-Palmia/querymind/actions/workflows/ci.yml"><img src="https://github.com/Saksham-Palmia/querymind/actions/workflows/ci.yml/badge.svg" alt="Checks"></a>
-  <img src="https://img.shields.io/badge/Python-3.11%2B-46663A?style=flat-square" alt="Python 3.11+">
-  <img src="https://img.shields.io/badge/PostgreSQL-16-46663A?style=flat-square" alt="PostgreSQL 16">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-46663A?style=flat-square" alt="MIT license"></a>
-</p>
+### Ask PostgreSQL questions in plain English.
 
-<p align="center">
-  <strong>A natural-language workspace for PostgreSQL.</strong><br>
-  Ask a question, inspect the generated SQL, and explore the results in one place.
-</p>
+A workspace for turning natural-language questions into SQL, inspecting the query, and exploring the result. Try the built-in examples immediately, or connect your own database.
 
-<p align="center">
-  <a href="#try-the-workspace">Try it locally</a> ·
-  <a href="#connect-a-live-database">Connect a database</a> ·
-  <a href="docs/ARCHITECTURE.MD">Architecture</a> ·
-  <a href="docs/query_pilot_api.md">API reference</a>
-</p>
+**[Quick start](#quick-start)** &nbsp; / &nbsp; **[Live setup](#live-setup)** &nbsp; / &nbsp; **[API reference](docs/query_pilot_api.md)** &nbsp; / &nbsp; **[Architecture](docs/ARCHITECTURE.MD)** &nbsp; / &nbsp; **[Build status](https://github.com/Saksham-Palmia/querymind/actions/workflows/ci.yml)**
 
-![QueryMind workspace showing an illustrative product revenue query](docs/assets/workspace.png)
+---
 
-*The screenshot shows sample mode. Its curated rows are illustrative, not live database results.*
+## The workspace
 
-## What you can do
+| Capability | What you get |
+| :--- | :--- |
+| Natural-language queries | Ask a question against a selected PostgreSQL schema. |
+| SQL inspection | View highlighted SQL and copy the executed query. |
+| Result exploration | Named columns, row filtering, and CSV export. |
+| Query correction | Schema retrieval, validation, and retries through LangGraph. |
+| Execution details | Attempts, latency, relevant tables, and correction status. |
+| Everyday controls | Session history, Ctrl/Cmd + Enter, and a responsive layout. |
 
-- **Explore before configuring anything.** Six sample questions across ecommerce and library data work without a database or API key.
-- **Ask your own database.** Live mode calls the FastAPI pipeline with the selected schema and your question.
-- **Understand the answer.** Switch between a labeled result table and highlighted SQL, filter rows, copy SQL, or export a CSV.
-- **Follow up quickly.** Reuse recent questions during the current session and run queries with Ctrl/Cmd + Enter. History stays in memory and clears on reload.
-- **Keep the pipeline transparent.** See attempts, latency, relevant tables, and whether correction was applied.
-- **Use it on a smaller screen.** The responsive workspace includes keyboard navigation, explicit loading/error states, and a mobile schema selector.
+## Quick start
 
-## Try the workspace
+Preview the interface with Python's standard library. No API key, database, or package installation is needed.
 
-The sample interface uses only Python's standard library. No package installation is needed for this preview.
-
-```bash
+~~~bash
 git clone https://github.com/Saksham-Palmia/querymind.git
 cd querymind
 python backend/scripts/preview.py
-```
+~~~
 
-Open **http://127.0.0.1:8080** and try a suggested question. Use `--port 8081` if that port is occupied. The preview server supports sample mode; live mode needs the backend below.
+Open **http://127.0.0.1:8080** and choose a suggested question. Add `--port 8081` if needed.
 
-## Connect a live database
+| Mode | Data source | Requirements |
+| :--- | :--- | :--- |
+| **Sample** | Six curated examples across ecommerce and library data | Python for the preview server |
+| **Live database** | Your configured PostgreSQL database | Backend, schema index, and an OpenAI or Groq API key |
 
-Requires Docker with Compose and an OpenAI or Groq API key. The first build downloads the Python dependencies and embedding model.
+Sample results are illustrative fixtures. Custom questions run through **Live database** mode.
 
-1. Copy `.env.example` to `.env` (`cp .env.example .env` on macOS/Linux, or `Copy-Item .env.example .env` in PowerShell).
-2. Set `OPENAI_API_KEY`, or select `LLM_PROVIDER=groq` and set `GROQ_API_KEY`. The template includes Docker connection settings for the sample PostgreSQL database and Chroma service.
-3. Start the stack:
+## Live setup
 
-```bash
+Requires Docker with Compose and an API key for your chosen provider.
+
+**1. Create your configuration.**
+
+Copy [.env.example](.env.example) to `.env`.
+
+~~~bash
+# macOS / Linux
+cp .env.example .env
+~~~
+
+~~~powershell
+# Windows PowerShell
+Copy-Item .env.example .env
+~~~
+
+Set `OPENAI_API_KEY`, or select `LLM_PROVIDER=groq` and set `GROQ_API_KEY`. The template includes the local Docker database and Chroma connection settings.
+
+**2. Start the services.**
+
+~~~bash
 docker compose up --build
-```
+~~~
 
-Open **http://localhost:8000**, choose **Live database**, and submit a question. The same server provides interactive API documentation at **/docs** and a health endpoint at **/health**. A reachable health endpoint confirms the API is running; it does not prove that every database/model dependency is ready.
+The first build installs dependencies and downloads the embedding model. A fresh PostgreSQL volume receives the sample schemas and seed data; existing volumes retain their data.
 
-On a fresh database volume, Compose creates the ecommerce and library schemas and loads their sample data. Existing volumes keep their data. `.env` is excluded from Git; keep provider keys on the server.
+**3. Open the workspace.**
 
-To connect existing tables or run without Docker, follow the [database setup guide](query_mind_use_with_your_own_database.md) and [deployment guide](docs/DEPLOYMENT.md).
+Visit **http://localhost:8000**, select **Live database**, choose a schema, and ask a question. Interactive API documentation is at **/docs**.
 
-## How it works
+For existing tables or a backend running without Docker, use the [database guide](query_mind_use_with_your_own_database.md) and [deployment guide](docs/DEPLOYMENT.md).
 
-```mermaid
-flowchart LR
-    Q[Question] --> S[Retrieve schema]
-    S --> G[Generate SQL]
-    G --> C[Validate SQL]
-    C -->|Valid| E[Read-only execution]
-    C -->|Needs repair| R[Correct and retry]
-    E -->|Recoverable error| R
-    R --> G
-    E -->|Success| A[SQL + results]
-```
+## Inside a query
 
-The schema linker retrieves relevant tables through ChromaDB and sentence-transformer embeddings. A Groq or OpenAI model generates PostgreSQL SQL; the critic checks it before execution. LangGraph manages correction and retries, with **1–5 total attempts** accepted per request (default **3**).
+~~~text
+Question → Retrieve schema → Generate SQL → Validate → Execute → Results
+                                  ↑            │          │
+                                  └──── Correct and retry ┘
+~~~
 
-Each compiled graph keeps its own agents, so cached ecommerce and library pipelines cannot overwrite each other's dependencies. Requests within one schema are serialized to protect mutable agent state. The executor explicitly starts a **read-only transaction**, applies a statement timeout, and returns up to 1,000 rows with column names.
+The schema linker retrieves relevant tables from ChromaDB. An OpenAI or Groq model generates SQL, the critic validates it, and the executor runs it in a read-only transaction. Recoverable failures feed back into the correction loop.
 
-## API example
+The pipeline accepts **1–5 total attempts** per request, defaults to **3**, and returns up to **1,000 rows**. Responses include the executed SQL and column metadata. Each schema has an isolated agent graph; requests within one cached schema are serialized.
 
-```bash
+<details>
+<summary><strong>Make a request directly</strong></summary>
+
+~~~bash
 curl -X POST http://localhost:8000/query \
   -H "Content-Type: application/json" \
   -d '{"question":"Which products have low stock?","schema_name":"ecommerce","max_attempts":3}'
-```
+~~~
 
-Responses include `sql`, `success`, `columns`, `rows`, `row_count`, `attempts`, `latency_ms`, `schema_tables_used`, `correction_applied`, and error information. See the [complete API reference](docs/query_pilot_api.md).
+Check both the HTTP status and the response's `success` field. Responses also include `sql`, `columns`, `rows`, `row_count`, `attempts`, `latency_ms`, `schema_tables_used`, `correction_applied`, and error information.
 
-## Stack
+See the [API reference](docs/query_pilot_api.md) for validation and error behavior.
 
-| Layer | Tools |
-| --- | --- |
-| Workspace | HTML, CSS, vanilla JavaScript — served by FastAPI |
+</details>
+
+## Technology
+
+| Layer | Implementation |
+| :--- | :--- |
+| Interface | HTML, CSS, vanilla JavaScript |
 | API | FastAPI, Pydantic, Uvicorn |
-| Agent workflow | LangGraph, LangChain, OpenAI / Groq |
+| Query workflow | LangGraph, LangChain, OpenAI / Groq |
 | Schema retrieval | ChromaDB, sentence-transformers |
 | Database | PostgreSQL 16, SQLAlchemy, psycopg2 |
-| Development | Docker Compose, pytest, GitHub Actions |
+| Tooling | Docker Compose, pytest, GitHub Actions |
 
-## Verification and evaluation
+## Development
 
-Run the lightweight regression suite without provider keys, a database, or embedding downloads:
+Run the lightweight tests without a database, provider keys, or embedding downloads:
 
-```bash
+~~~bash
 python -m pip install -r backend/requirements-test.txt
 cd backend
 python -m pytest tests/unit -q
-```
+~~~
 
-The suite covers request validation, API/static routing, result metadata, retry limits, graph isolation, and read-only execution. Optional [browser checks](backend/scripts/check_ui.py) use the `playwright` Python package and an **already installed** Chrome or Edge executable; the script does not download a browser.
+The suite covers request validation, API routing, result metadata, retry limits, graph isolation, and read-only execution. [Optional browser checks](backend/scripts/check_ui.py) use the `playwright` Python package with an already installed Chrome or Edge executable.
 
-Historical evaluation artifacts are kept in [backend/evaluation_results](backend/evaluation_results) and [the evaluation report](docs/EVALUATION_REPORT.md). The recorded core ecommerce run reports **67/70 execution successes**. These are historical results, not a fresh benchmark of this edition, and execution success does not establish that an answer is semantically correct.
+<details>
+<summary><strong>Repository map</strong></summary>
 
-## Scope and limitations
-
-QueryMind is a development and portfolio project. SQL validation uses heuristics; generated queries and results should be reviewed. For a public live deployment, add authentication and rate limits, and use a restricted read-only database account. The bundled local stack binds to localhost and has no application login. Model calls can incur provider charges.
-
-Sample mode uses fixed fixtures and supports its suggested questions only. The browser timeout stops waiting after two minutes; it does not cancel work already running on the server. Export includes all returned rows, even if the visible table is filtered. Google Fonts are optional; system fonts provide a fallback.
-
-## Explore the source
-
-```text
-backend/app/web/       Responsive query workspace
-backend/app/api/       Request and response endpoints
-backend/app/agents/    Schema linking, SQL, validation, execution, correction
+~~~text
+backend/app/web/       Interface
+backend/app/api/       Endpoints and response models
+backend/app/agents/    SQL generation, validation, execution, correction
 backend/app/schema/    Metadata extraction and vector storage
-backend/tests/unit/    Tests that run without external services
-backend/scripts/      Preview, indexing, evaluation, and browser checks
-database/             Sample PostgreSQL schemas and seed data
-docs/                 Architecture, deployment, and historical reports
-```
+backend/tests/unit/    Tests without external services
+backend/scripts/      Preview, indexing, evaluation, browser checks
+database/             Sample schemas and seed data
+docs/                 Architecture, deployment, evaluation reports
+~~~
 
-## Author and license
+</details>
 
-Maintained by **[Saksham Palmia](https://github.com/Saksham-Palmia)**. Released under the [MIT License](LICENSE). Copyright © 2026 Saksham Palmia.
+<details>
+<summary><strong>Evaluation and practical limits</strong></summary>
+
+Historical [evaluation artifacts](backend/evaluation_results) record **67/70 execution successes** on the core ecommerce set. This is an earlier run, not a new benchmark of the current edition. SQL executing successfully does not establish that the result answers the question correctly.
+
+The [verification notes](docs/VERIFICATION.md) describe the current checks and their scope. Live PostgreSQL/Chroma/LLM integration and a full Docker build have not been verified for this edition.
+
+- The bundled stack is for local development and has no application login. A public live deployment needs authentication, request limits, HTTPS, and a restricted database account.
+- SQL validation uses heuristics. Review generated queries and results.
+- The browser stops waiting after two minutes; this does not cancel server-side work.
+- CSV export includes all returned rows, including rows hidden by the current filter.
+- Session history stays in memory and clears on reload. Provider calls may incur charges.
+- Keep credentials in the ignored `.env` file or your hosting platform's secret settings.
+
+</details>
+
+---
+
+**[Saksham Palmia](https://github.com/Saksham-Palmia)** &nbsp; · &nbsp; [MIT License](LICENSE) &nbsp; · &nbsp; Copyright © 2026 Saksham Palmia
