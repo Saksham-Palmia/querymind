@@ -1,0 +1,1327 @@
+{
+  "timestamp": "2026-02-25T15:17:34.746420",
+  "dataset": "backend/app/evaluation/datasets/core_eval.json",
+  "total_tests": 20,
+  "summary": {
+    "first_attempt_success": 20,
+    "first_attempt_rate": 1.0,
+    "corrected_success": 0,
+    "correction_effectiveness": 1.0,
+    "final_failures": 0,
+    "overall_success_rate": 1.0,
+    "avg_attempts": 1.0,
+    "total_attempts": 20
+  },
+  "criteria": {
+    "first_attempt_above_30": true,
+    "correction_above_60": true,
+    "overall_above_85": true,
+    "all_passed": true
+  },
+  "category_breakdown": {
+    "core_eval": {
+      "total": 20,
+      "first_success": 20,
+      "corrected": 0,
+      "failed": 0
+    }
+  },
+  "detailed_results": [
+    {
+      "test_id": "simple_001",
+      "question": "How many products are in the database?",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT COUNT(product_id) AS total_products FROM products LIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "total_products": 15
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 34.92,
+        "row_count": 1
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_002",
+      "question": "List all customer names",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT name FROM customers LIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "name": "Alice Johnson"
+          },
+          {
+            "name": "Bob Smith"
+          },
+          {
+            "name": "Charlie Brown"
+          },
+          {
+            "name": "Diana Prince"
+          },
+          {
+            "name": "Ethan Hunt"
+          },
+          {
+            "name": "Fiona Green"
+          },
+          {
+            "name": "George Miller"
+          },
+          {
+            "name": "Hannah White"
+          },
+          {
+            "name": "Ivan Petrov"
+          },
+          {
+            "name": "Julia Roberts"
+          },
+          {
+            "name": "Kevin Hart"
+          },
+          {
+            "name": "Laura Palmer"
+          },
+          {
+            "name": "Mike Chen"
+          },
+          {
+            "name": "Nina Simone"
+          },
+          {
+            "name": "Oscar Wilde"
+          },
+          {
+            "name": "Priya Sharma"
+          },
+          {
+            "name": "Quinn Hughes"
+          },
+          {
+            "name": "Rachel Green"
+          },
+          {
+            "name": "Sam Wilson"
+          },
+          {
+            "name": "Tina Fey"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.46,
+        "row_count": 20
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_003",
+      "question": "Show products with price greater than 100",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT product_id, name, price FROM products WHERE price > 100 LIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 1,
+            "name": "Laptop",
+            "price": "999.99"
+          },
+          {
+            "product_id": 2,
+            "name": "Smartphone",
+            "price": "699.99"
+          },
+          {
+            "product_id": 8,
+            "name": "Jacket",
+            "price": "149.99"
+          },
+          {
+            "product_id": 15,
+            "name": "Coffee Maker",
+            "price": "129.99"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.62,
+        "row_count": 4
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_004",
+      "question": "What are the top 5 most expensive products?",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT product_id, name, price \nFROM products \nORDER BY price DESC \nLIMIT 5;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 1,
+            "name": "Laptop",
+            "price": "999.99"
+          },
+          {
+            "product_id": 2,
+            "name": "Smartphone",
+            "price": "699.99"
+          },
+          {
+            "product_id": 8,
+            "name": "Jacket",
+            "price": "149.99"
+          },
+          {
+            "product_id": 15,
+            "name": "Coffee Maker",
+            "price": "129.99"
+          },
+          {
+            "product_id": 7,
+            "name": "Running Shoes",
+            "price": "89.99"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.25,
+        "row_count": 5
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_005",
+      "question": "Count how many orders have completed status",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT COUNT(*) AS completed_orders_count \nFROM orders \nWHERE status = 'completed' \nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "completed_orders_count": 25
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.29,
+        "row_count": 1
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_006",
+      "question": "Show all product categories",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT category_id, name, description FROM categories ORDER BY category_id LIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "category_id": 1,
+            "name": "Electronics",
+            "description": "Electronic devices and accessories"
+          },
+          {
+            "category_id": 2,
+            "name": "Clothing",
+            "description": "Apparel and fashion items"
+          },
+          {
+            "category_id": 3,
+            "name": "Books",
+            "description": "Physical and digital books"
+          },
+          {
+            "category_id": 4,
+            "name": "Sports",
+            "description": "Sports equipment and fitness gear"
+          },
+          {
+            "category_id": 5,
+            "name": "Home & Kitchen",
+            "description": "Home appliances and kitchen tools"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 7.88,
+        "row_count": 5
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_007",
+      "question": "Find products with low stock (less than 10 units)",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT product_id, name, stock_quantity \nFROM products \nWHERE stock_quantity < 10 \nORDER BY stock_quantity \nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 14,
+            "name": "Water Bottle",
+            "stock_quantity": 0
+          },
+          {
+            "product_id": 13,
+            "name": "Dumbbell Set",
+            "stock_quantity": 5
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 4.69,
+        "row_count": 2
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "simple_008",
+      "question": "List customers from USA",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT customer_id, name, email, created_at, country, lifetime_value FROM customers WHERE country ILIKE 'USA' LIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "customer_id": 1,
+            "name": "Alice Johnson",
+            "email": "alice@example.com",
+            "created_at": "2025-02-09 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "1250.00"
+          },
+          {
+            "customer_id": 4,
+            "name": "Diana Prince",
+            "email": "diana@example.com",
+            "created_at": "2025-05-30 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "3200.00"
+          },
+          {
+            "customer_id": 7,
+            "name": "George Miller",
+            "email": "george@example.com",
+            "created_at": "2025-07-29 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "450.00"
+          },
+          {
+            "customer_id": 10,
+            "name": "Julia Roberts",
+            "email": "julia@example.com",
+            "created_at": "2025-09-27 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "4500.00"
+          },
+          {
+            "customer_id": 13,
+            "name": "Mike Chen",
+            "email": "mike@example.com",
+            "created_at": "2025-11-26 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "340.00"
+          },
+          {
+            "customer_id": 18,
+            "name": "Rachel Green",
+            "email": "rachel@example.com",
+            "created_at": "2026-01-25 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "2100.00"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 10.31,
+        "row_count": 6
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_001",
+      "question": "What are the top 10 products by revenue?",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT p.product_id, p.name, SUM(oi.subtotal) AS total_revenue\nFROM products p\nJOIN order_items oi ON p.product_id = oi.product_id\nGROUP BY p.product_id, p.name\nORDER BY total_revenue DESC\nLIMIT 10;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 1,
+            "name": "Laptop",
+            "total_revenue": "2999.97"
+          },
+          {
+            "product_id": 2,
+            "name": "Smartphone",
+            "total_revenue": "2099.97"
+          },
+          {
+            "product_id": 3,
+            "name": "Wireless Earbuds",
+            "total_revenue": "499.94"
+          },
+          {
+            "product_id": 7,
+            "name": "Running Shoes",
+            "total_revenue": "359.96"
+          },
+          {
+            "product_id": 15,
+            "name": "Coffee Maker",
+            "total_revenue": "259.98"
+          },
+          {
+            "product_id": 13,
+            "name": "Dumbbell Set",
+            "total_revenue": "179.98"
+          },
+          {
+            "product_id": 6,
+            "name": "Jeans",
+            "total_revenue": "179.97"
+          },
+          {
+            "product_id": 8,
+            "name": "Jacket",
+            "total_revenue": "149.99"
+          },
+          {
+            "product_id": 4,
+            "name": "USB-C Hub",
+            "total_revenue": "119.97"
+          },
+          {
+            "product_id": 10,
+            "name": "Data Science Handbook",
+            "total_revenue": "99.98"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 9.47,
+        "row_count": 10
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_002",
+      "question": "Show customers and their total order count",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT c.customer_id, c.name, COUNT(o.order_id) AS total_order_count\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.name\nORDER BY total_order_count DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "customer_id": 10,
+            "name": "Julia Roberts",
+            "total_order_count": 5
+          },
+          {
+            "customer_id": 4,
+            "name": "Diana Prince",
+            "total_order_count": 4
+          },
+          {
+            "customer_id": 1,
+            "name": "Alice Johnson",
+            "total_order_count": 3
+          },
+          {
+            "customer_id": 11,
+            "name": "Kevin Hart",
+            "total_order_count": 2
+          },
+          {
+            "customer_id": 16,
+            "name": "Priya Sharma",
+            "total_order_count": 2
+          },
+          {
+            "customer_id": 18,
+            "name": "Rachel Green",
+            "total_order_count": 2
+          },
+          {
+            "customer_id": 6,
+            "name": "Fiona Green",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 14,
+            "name": "Nina Simone",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 13,
+            "name": "Mike Chen",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 2,
+            "name": "Bob Smith",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 7,
+            "name": "George Miller",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 12,
+            "name": "Laura Palmer",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 8,
+            "name": "Hannah White",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 9,
+            "name": "Ivan Petrov",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 15,
+            "name": "Oscar Wilde",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 19,
+            "name": "Sam Wilson",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 3,
+            "name": "Charlie Brown",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 5,
+            "name": "Ethan Hunt",
+            "total_order_count": 1
+          },
+          {
+            "customer_id": 20,
+            "name": "Tina Fey",
+            "total_order_count": 0
+          },
+          {
+            "customer_id": 17,
+            "name": "Quinn Hughes",
+            "total_order_count": 0
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.47,
+        "row_count": 20
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_003",
+      "question": "Calculate total revenue by product category",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT c.name AS category_name, SUM(oi.subtotal) AS total_revenue\nFROM categories c\nJOIN products p ON c.category_id = p.category_id\nJOIN order_items oi ON p.product_id = oi.product_id\nGROUP BY c.category_id, c.name\nORDER BY total_revenue DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "category_name": "Electronics",
+            "total_revenue": "5719.85"
+          },
+          {
+            "category_name": "Clothing",
+            "total_revenue": "779.89"
+          },
+          {
+            "category_name": "Books",
+            "total_revenue": "269.94"
+          },
+          {
+            "category_name": "Home & Kitchen",
+            "total_revenue": "259.98"
+          },
+          {
+            "category_name": "Sports",
+            "total_revenue": "231.96"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 7.72,
+        "row_count": 5
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_004",
+      "question": "Find products that have never been ordered",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT p.product_id, p.name, p.price \nFROM products p \nLEFT JOIN order_items oi ON p.product_id = oi.product_id \nWHERE oi.order_item_id IS NULL \nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 14,
+            "name": "Water Bottle",
+            "price": "19.99"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.0,
+        "row_count": 1
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_005",
+      "question": "Show average order value by customer",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT c.customer_id, c.name, AVG(o.total_amount) AS average_order_value\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.name\nORDER BY average_order_value DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "customer_id": 14,
+            "name": "Nina Simone",
+            "average_order_value": "999.9900000000000000"
+          },
+          {
+            "customer_id": 8,
+            "name": "Hannah White",
+            "average_order_value": "749.9800000000000000"
+          },
+          {
+            "customer_id": 11,
+            "name": "Kevin Hart",
+            "average_order_value": "462.4800000000000000"
+          },
+          {
+            "customer_id": 1,
+            "name": "Alice Johnson",
+            "average_order_value": "418.3166666666666667"
+          },
+          {
+            "customer_id": 10,
+            "name": "Julia Roberts",
+            "average_order_value": "393.9900000000000000"
+          },
+          {
+            "customer_id": 4,
+            "name": "Diana Prince",
+            "average_order_value": "254.9875000000000000"
+          },
+          {
+            "customer_id": 7,
+            "name": "George Miller",
+            "average_order_value": "89.9900000000000000"
+          },
+          {
+            "customer_id": 5,
+            "name": "Ethan Hunt",
+            "average_order_value": "89.9900000000000000"
+          },
+          {
+            "customer_id": 16,
+            "name": "Priya Sharma",
+            "average_order_value": "89.9850000000000000"
+          },
+          {
+            "customer_id": 6,
+            "name": "Fiona Green",
+            "average_order_value": "89.9800000000000000"
+          },
+          {
+            "customer_id": 18,
+            "name": "Rachel Green",
+            "average_order_value": "84.9900000000000000"
+          },
+          {
+            "customer_id": 13,
+            "name": "Mike Chen",
+            "average_order_value": "79.9900000000000000"
+          },
+          {
+            "customer_id": 19,
+            "name": "Sam Wilson",
+            "average_order_value": "79.9900000000000000"
+          },
+          {
+            "customer_id": 15,
+            "name": "Oscar Wilde",
+            "average_order_value": "59.9900000000000000"
+          },
+          {
+            "customer_id": 12,
+            "name": "Laura Palmer",
+            "average_order_value": "49.9900000000000000"
+          },
+          {
+            "customer_id": 9,
+            "name": "Ivan Petrov",
+            "average_order_value": "39.9900000000000000"
+          },
+          {
+            "customer_id": 3,
+            "name": "Charlie Brown",
+            "average_order_value": "39.9900000000000000"
+          },
+          {
+            "customer_id": 2,
+            "name": "Bob Smith",
+            "average_order_value": "29.9900000000000000"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.99,
+        "row_count": 18
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_006",
+      "question": "List products with their average review rating",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT p.product_id, p.name, AVG(r.rating) AS average_rating\nFROM products p\nLEFT JOIN reviews r ON p.product_id = r.product_id\nGROUP BY p.product_id, p.name\nORDER BY p.product_id\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 1,
+            "name": "Laptop",
+            "average_rating": "4.6666666666666667"
+          },
+          {
+            "product_id": 2,
+            "name": "Smartphone",
+            "average_rating": "4.0000000000000000"
+          },
+          {
+            "product_id": 3,
+            "name": "Wireless Earbuds",
+            "average_rating": "4.3333333333333333"
+          },
+          {
+            "product_id": 4,
+            "name": "USB-C Hub",
+            "average_rating": "4.0000000000000000"
+          },
+          {
+            "product_id": 5,
+            "name": "T-Shirt",
+            "average_rating": "3.0000000000000000"
+          },
+          {
+            "product_id": 6,
+            "name": "Jeans",
+            "average_rating": "4.0000000000000000"
+          },
+          {
+            "product_id": 7,
+            "name": "Running Shoes",
+            "average_rating": "4.5000000000000000"
+          },
+          {
+            "product_id": 8,
+            "name": "Jacket",
+            "average_rating": "2.0000000000000000"
+          },
+          {
+            "product_id": 9,
+            "name": "Python Programming Book",
+            "average_rating": "5.0000000000000000"
+          },
+          {
+            "product_id": 10,
+            "name": "Data Science Handbook",
+            "average_rating": "4.0000000000000000"
+          },
+          {
+            "product_id": 11,
+            "name": "System Design Interview",
+            "average_rating": "4.5000000000000000"
+          },
+          {
+            "product_id": 12,
+            "name": "Yoga Mat",
+            "average_rating": "4.5000000000000000"
+          },
+          {
+            "product_id": 13,
+            "name": "Dumbbell Set",
+            "average_rating": "3.0000000000000000"
+          },
+          {
+            "product_id": 14,
+            "name": "Water Bottle",
+            "average_rating": null
+          },
+          {
+            "product_id": 15,
+            "name": "Coffee Maker",
+            "average_rating": "5.0000000000000000"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.93,
+        "row_count": 15
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_007",
+      "question": "Count orders per payment method",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT payment_method, COUNT(DISTINCT o.order_id) AS order_count\nFROM payments p\nJOIN orders o ON p.order_id = o.order_id\nGROUP BY payment_method\nORDER BY order_count DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "payment_method": "credit_card",
+            "order_count": 14
+          },
+          {
+            "payment_method": "paypal",
+            "order_count": 9
+          },
+          {
+            "payment_method": "bank_transfer",
+            "order_count": 3
+          },
+          {
+            "payment_method": "apple_pay",
+            "order_count": 1
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 7.97,
+        "row_count": 4
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "medium_008",
+      "question": "Show total quantity sold for each product",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT oi.product_id, SUM(oi.quantity) AS total_quantity_sold\nFROM order_items oi\nGROUP BY oi.product_id\nORDER BY total_quantity_sold DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "product_id": 3,
+            "total_quantity_sold": 6
+          },
+          {
+            "product_id": 7,
+            "total_quantity_sold": 4
+          },
+          {
+            "product_id": 2,
+            "total_quantity_sold": 3
+          },
+          {
+            "product_id": 6,
+            "total_quantity_sold": 3
+          },
+          {
+            "product_id": 4,
+            "total_quantity_sold": 3
+          },
+          {
+            "product_id": 1,
+            "total_quantity_sold": 3
+          },
+          {
+            "product_id": 5,
+            "total_quantity_sold": 3
+          },
+          {
+            "product_id": 11,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 9,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 15,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 10,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 13,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 12,
+            "total_quantity_sold": 2
+          },
+          {
+            "product_id": 8,
+            "total_quantity_sold": 1
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 4.28,
+        "row_count": 14
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "hard_001",
+      "question": "Find customers who have placed more orders than average",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "WITH average_order_count AS (\n    SELECT AVG(order_count) AS avg_count\n    FROM (\n        SELECT customer_id, COUNT(order_id) AS order_count\n        FROM orders\n        GROUP BY customer_id\n    ) AS customer_orders\n)\nSELECT c.customer_id, c.name, COUNT(o.order_id) AS order_count\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.name\nHAVING COUNT(o.order_id) > (SELECT avg_count FROM average_order_count)\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "customer_id": 11,
+            "name": "Kevin Hart",
+            "order_count": 2
+          },
+          {
+            "customer_id": 4,
+            "name": "Diana Prince",
+            "order_count": 4
+          },
+          {
+            "customer_id": 10,
+            "name": "Julia Roberts",
+            "order_count": 5
+          },
+          {
+            "customer_id": 16,
+            "name": "Priya Sharma",
+            "order_count": 2
+          },
+          {
+            "customer_id": 1,
+            "name": "Alice Johnson",
+            "order_count": 3
+          },
+          {
+            "customer_id": 18,
+            "name": "Rachel Green",
+            "order_count": 2
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 7.45,
+        "row_count": 6
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "hard_002",
+      "question": "Show monthly revenue trend for the last 6 months",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT DATE_TRUNC('month', o.order_date) AS month, SUM(o.total_amount) AS total_revenue\nFROM orders o\nWHERE o.order_date >= CURRENT_DATE - INTERVAL '6 months'\nGROUP BY month\nORDER BY month\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "month": "2025-08-01 00:00:00",
+            "total_revenue": "44.99"
+          },
+          {
+            "month": "2025-09-01 00:00:00",
+            "total_revenue": "179.97"
+          },
+          {
+            "month": "2025-10-01 00:00:00",
+            "total_revenue": "789.98"
+          },
+          {
+            "month": "2025-11-01 00:00:00",
+            "total_revenue": "169.97"
+          },
+          {
+            "month": "2025-12-01 00:00:00",
+            "total_revenue": "1039.98"
+          },
+          {
+            "month": "2026-01-01 00:00:00",
+            "total_revenue": "319.96"
+          },
+          {
+            "month": "2026-02-01 00:00:00",
+            "total_revenue": "304.95"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.61,
+        "row_count": 7
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "hard_003",
+      "question": "Rank products by revenue within each category",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "WITH category_revenue AS (\n    SELECT \n        p.category_id,\n        p.product_id,\n        SUM(oi.subtotal) AS total_revenue\n    FROM \n        products p\n    JOIN \n        order_items oi ON p.product_id = oi.product_id\n    GROUP BY \n        p.category_id, p.product_id\n)\nSELECT \n    c.name AS category_name,\n    p.product_id,\n    p.name AS product_name,\n    cr.total_revenue\nFROM \n    category_revenue cr\nJOIN \n    products p ON cr.product_id = p.product_id\nJOIN \n    categories c ON cr.category_id = c.category_id\nORDER BY \n    c.category_id, cr.total_revenue DESC\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "category_name": "Electronics",
+            "product_id": 1,
+            "product_name": "Laptop",
+            "total_revenue": "2999.97"
+          },
+          {
+            "category_name": "Electronics",
+            "product_id": 2,
+            "product_name": "Smartphone",
+            "total_revenue": "2099.97"
+          },
+          {
+            "category_name": "Electronics",
+            "product_id": 3,
+            "product_name": "Wireless Earbuds",
+            "total_revenue": "499.94"
+          },
+          {
+            "category_name": "Electronics",
+            "product_id": 4,
+            "product_name": "USB-C Hub",
+            "total_revenue": "119.97"
+          },
+          {
+            "category_name": "Clothing",
+            "product_id": 7,
+            "product_name": "Running Shoes",
+            "total_revenue": "359.96"
+          },
+          {
+            "category_name": "Clothing",
+            "product_id": 6,
+            "product_name": "Jeans",
+            "total_revenue": "179.97"
+          },
+          {
+            "category_name": "Clothing",
+            "product_id": 8,
+            "product_name": "Jacket",
+            "total_revenue": "149.99"
+          },
+          {
+            "category_name": "Clothing",
+            "product_id": 5,
+            "product_name": "T-Shirt",
+            "total_revenue": "89.97"
+          },
+          {
+            "category_name": "Books",
+            "product_id": 10,
+            "product_name": "Data Science Handbook",
+            "total_revenue": "99.98"
+          },
+          {
+            "category_name": "Books",
+            "product_id": 11,
+            "product_name": "System Design Interview",
+            "total_revenue": "89.98"
+          },
+          {
+            "category_name": "Books",
+            "product_id": 9,
+            "product_name": "Python Programming Book",
+            "total_revenue": "79.98"
+          },
+          {
+            "category_name": "Sports",
+            "product_id": 13,
+            "product_name": "Dumbbell Set",
+            "total_revenue": "179.98"
+          },
+          {
+            "category_name": "Sports",
+            "product_id": 12,
+            "product_name": "Yoga Mat",
+            "total_revenue": "51.98"
+          },
+          {
+            "category_name": "Home & Kitchen",
+            "product_id": 15,
+            "product_name": "Coffee Maker",
+            "total_revenue": "259.98"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 5.3,
+        "row_count": 14
+      },
+      "validation_issues": []
+    },
+    {
+      "test_id": "hard_004",
+      "question": "Identify customers who haven't ordered in the last 90 days",
+      "category": "core_eval",
+      "expected_error": "N/A",
+      "should_succeed": true,
+      "actual_success": true,
+      "attempts": 1,
+      "was_corrected": false,
+      "used_fallback": false,
+      "final_sql": "SELECT c.customer_id, c.name, c.email, c.created_at, c.country, c.lifetime_value\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id AND o.order_date >= CURRENT_DATE - INTERVAL '90 days'\nWHERE o.order_id IS NULL\nLIMIT 1000;",
+      "execution_result": {
+        "success": true,
+        "data": [
+          {
+            "customer_id": 20,
+            "name": "Tina Fey",
+            "email": "tina@example.com",
+            "created_at": "2026-02-14 18:31:06.866481",
+            "country": "Germany",
+            "lifetime_value": "0.00"
+          },
+          {
+            "customer_id": 17,
+            "name": "Quinn Hughes",
+            "email": "quinn@example.com",
+            "created_at": "2026-01-15 18:31:06.866481",
+            "country": "Canada",
+            "lifetime_value": "0.00"
+          },
+          {
+            "customer_id": 12,
+            "name": "Laura Palmer",
+            "email": "laura@example.com",
+            "created_at": "2025-11-06 18:31:06.866481",
+            "country": "Canada",
+            "lifetime_value": "980.00"
+          },
+          {
+            "customer_id": 2,
+            "name": "Bob Smith",
+            "email": "bob@example.com",
+            "created_at": "2025-03-21 18:31:06.866481",
+            "country": "UK",
+            "lifetime_value": "890.50"
+          },
+          {
+            "customer_id": 13,
+            "name": "Mike Chen",
+            "email": "mike@example.com",
+            "created_at": "2025-11-26 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "340.00"
+          },
+          {
+            "customer_id": 5,
+            "name": "Ethan Hunt",
+            "email": "ethan@example.com",
+            "created_at": "2025-06-19 18:31:06.866481",
+            "country": "Australia",
+            "lifetime_value": "760.00"
+          },
+          {
+            "customer_id": 8,
+            "name": "Hannah White",
+            "email": "hannah@example.com",
+            "created_at": "2025-08-18 18:31:06.866481",
+            "country": "India",
+            "lifetime_value": "2800.00"
+          },
+          {
+            "customer_id": 6,
+            "name": "Fiona Green",
+            "email": "fiona@example.com",
+            "created_at": "2025-07-09 18:31:06.866481",
+            "country": "Germany",
+            "lifetime_value": "1100.00"
+          },
+          {
+            "customer_id": 1,
+            "name": "Alice Johnson",
+            "email": "alice@example.com",
+            "created_at": "2025-02-09 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "1250.00"
+          },
+          {
+            "customer_id": 3,
+            "name": "Charlie Brown",
+            "email": "charlie@example.com",
+            "created_at": "2025-04-30 18:31:06.866481",
+            "country": "Canada",
+            "lifetime_value": "2100.00"
+          },
+          {
+            "customer_id": 7,
+            "name": "George Miller",
+            "email": "george@example.com",
+            "created_at": "2025-07-29 18:31:06.866481",
+            "country": "USA",
+            "lifetime_value": "450.00"
+          }
+        ],
+        "error_type": null,
+        "error_message": null,
+        "error_feedback": null,
+        "execution_time_ms": 6.91,
+        "row_count": 11
+      },
+      "validation_issues": []
+    }
+  ]
+}

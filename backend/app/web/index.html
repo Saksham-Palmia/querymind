@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17251f">
+  <meta name="description" content="Explore PostgreSQL in plain English. QueryMind turns questions into SQL with transparent results and automatic correction.">
+  <title>QueryMind · The data workspace</title>
+  <link rel="icon" href="./mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#question">Skip to query editor</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="QueryMind home"><img src="./mark.svg" alt="" width="34" height="34">QueryMind<span class="brand-dot">.</span></a>
+    <div class="workspace-label">YOUR WORKSPACE <span>01</span></div>
+    <nav aria-label="Workspace navigation">
+      <a class="nav-item active" href="#editor"><span aria-hidden="true">⌘</span> Query workspace <span class="nav-count">1</span></a>
+      <a class="nav-item" href="#recent"><span aria-hidden="true">◷</span> Session history</a>
+      <a class="nav-item" href="https://github.com/Saksham-Palmia/querymind#readme" target="_blank" rel="noreferrer"><span aria-hidden="true">▤</span> Documentation <span class="external">↗</span></a>
+    </nav>
+    <div class="sidebar-section">
+      <div class="workspace-label">DATA SOURCES <span id="source-count">02</span></div>
+      <label class="sr-only" for="schema">Database schema</label>
+      <select id="schema"><option value="ecommerce">Ecommerce</option><option value="library">Library</option></select>
+      <p class="source-caption" id="source-caption">Sample schema · PostgreSQL</p>
+      <ul class="table-list" id="schema-tables" aria-label="Schema tables"></ul>
+    </div>
+    <section class="recent-section" id="recent" aria-labelledby="recent-title">
+      <div class="workspace-label" id="recent-title">RECENT QUESTIONS <button id="clear-history" class="text-button" type="button" hidden>Clear</button></div>
+      <p class="history-empty" id="history-empty">Your next discovery starts with a question.</p>
+      <ul id="history-list" class="history-list"></ul>
+    </section>
+    <div class="sidebar-bottom">
+      <div class="sidebar-note"><span aria-hidden="true">✳</span><strong>A little curiosity.<br>A lot of possibility.</strong><p>Your data has a story.<br>Let’s find it.</p></div>
+      <a class="profile-link" href="https://github.com/Saksham-Palmia" target="_blank" rel="noreferrer"><span class="avatar">SP</span><span>Saksham Palmia<small>Project maintainer</small></span><span class="external">↗</span></a>
+    </div>
+  </aside>
+  <div class="main-shell">
+    <header class="topbar">
+      <div class="breadcrumb">Workspace <span>/</span> <strong>Query editor</strong></div>
+      <div class="topbar-right"><span class="connection" id="connection"><i></i> Sample workspace</span><a class="github-link" href="https://github.com/Saksham-Palmia/querymind" target="_blank" rel="noreferrer">GitHub <span>↗</span></a></div>
+    </header>
+    <main>
+      <section class="page-heading">
+        <div><p class="eyebrow"><span></span> LESS SQL. MORE DISCOVERY.</p><h1>Your data.<br class="mobile-break"> In plain English.</h1><p class="intro">Go from a good question to a clear answer.</p></div>
+        <div class="mode-switch" role="group" aria-label="Workspace mode"><button id="sample-mode" type="button" aria-pressed="true">Sample</button><button id="live-mode" type="button" aria-pressed="false">Live database</button></div>
+        <div class="mobile-source"><label for="mobile-schema">Data source</label><select id="mobile-schema"><option value="ecommerce">Ecommerce</option><option value="library">Library</option></select></div>
+      </section>
+      <div class="mode-note" id="mode-note"><span aria-hidden="true">◈</span><p><strong>A little room to explore.</strong> Try a curated example. Sample results need no database or API key.</p><span class="small-tag">SAMPLE DATA</span></div>
+      <div class="editor-layout">
+        <section class="card editor-card" id="editor" aria-labelledby="editor-title">
+          <div class="card-heading"><h2 id="editor-title"><span class="section-icon" aria-hidden="true">✳</span> Ask your data</h2><span class="subtle-label">NATURAL LANGUAGE</span></div>
+          <form id="query-form">
+            <label class="sr-only" for="question">Your question</label>
+            <textarea id="question" name="question" maxlength="2000" required placeholder="Which products bring in the most revenue?" aria-describedby="question-help"></textarea>
+            <div class="editor-footer"><span id="question-help"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run</span><button class="primary-button" id="run-query" type="submit"><span id="run-label">Run sample</span><span aria-hidden="true">↗</span></button></div>
+          </form>
+          <div class="suggestions"><span>TRY ASKING</span><div id="suggestion-list"></div></div>
+        </section>
+        <aside class="flow-card" aria-label="How QueryMind works">
+          <div class="flow-heading"><span class="flow-icon" aria-hidden="true">⌁</span><span>FROM QUESTION<br><strong>to understanding.</strong></span></div>
+          <ol class="pipeline"><li><span>01</span><div><strong>Find the context</strong><small>Retrieve the relevant schema</small></div></li><li><span>02</span><div><strong>Write &amp; review</strong><small>Generate SQL, check guardrails</small></div></li><li><span>03</span><div><strong>Run &amp; refine</strong><small>Execute, correct, return results</small></div></li></ol>
+          <p class="flow-footnote">Every answer comes with its SQL.</p>
+        </aside>
+      </div>
+      <div class="status-message" id="status-message" role="status" aria-live="polite" hidden></div>
+      <section class="card results-card" id="results" aria-labelledby="results-title" aria-busy="false">
+        <div class="results-top"><div class="results-heading"><span class="result-indicator" id="result-indicator" aria-hidden="true"></span><h2 id="results-title">A closer look</h2><span id="result-badge" class="result-badge">Sample result</span></div><div class="result-actions"><button class="outline-button" id="copy-sql" type="button">Copy SQL</button><button class="outline-button" id="export-csv" type="button"><span aria-hidden="true">↓</span> Export CSV</button></div></div>
+        <div class="result-toolbar"><div class="tabs" role="tablist" aria-label="Result view"><button id="table-tab" type="button" role="tab" aria-selected="true" aria-controls="table-panel">Results <span id="row-badge">0</span></button><button id="sql-tab" type="button" role="tab" aria-selected="false" aria-controls="sql-panel" tabindex="-1">SQL query</button></div><label class="filter-label"><span aria-hidden="true">⌕</span><input id="filter-rows" type="search" placeholder="Filter results…" aria-label="Filter result rows"></label></div>
+        <div id="table-panel" role="tabpanel" aria-labelledby="table-tab" tabindex="0"><div class="table-scroll"><table id="result-table"><caption class="sr-only">Query results</caption><thead></thead><tbody></tbody></table></div><div class="empty-result" id="empty-result" hidden><span aria-hidden="true">⌕</span><h3>No rows to show</h3><p id="empty-detail">Run a question to explore your data.</p></div></div>
+        <div id="sql-panel" role="tabpanel" aria-labelledby="sql-tab" tabindex="0" hidden><div class="sql-caption"><span>POSTGRESQL</span><span id="sql-caption">Illustrative SQL · sample mode</span></div><pre><code id="sql-code"></code></pre></div>
+        <footer class="result-footer"><span id="result-summary">Choose an example to get started</span><div id="result-metrics"></div></footer>
+      </section>
+      <footer class="page-footer"><span><span class="footer-symbol">✳</span> Built for the curious.</span><span>QueryMind <span class="footer-dot">·</span> Natural language → SQL</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

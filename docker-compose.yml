@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: querymind-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-querymind_local}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schemas/ecommerce.sql:/docker-entrypoint-initdb.d/01-ecommerce.sql
+      - ./database/schemas/library.sql:/docker-entrypoint-initdb.d/02-library.sql
+      - ./database/library_seed.sql:/docker-entrypoint-initdb.d/03-library-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-ecommerce}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  chromadb:
+      image: chromadb/chroma:1.4.1
+      container_name: querymind-chroma
+      ports:
+        - "127.0.0.1:8001:8000"
+      volumes:
+        - chroma_data:/chroma/chroma
+      environment:
+        - IS_PERSISTENT=TRUE
+
+  backend:
+    build: ./backend
+    container_name: querymind-backend
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file: .env
+    environment:
+      CHROMA_URL: http://chromadb:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  chroma_data:

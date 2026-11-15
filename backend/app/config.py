@@ -1,0 +1,110 @@
+# backend/app/config.py
+"""
+Configuration module for QueryMind
+Supports both Groq (primary) and OpenAI (backup) providers
+"""
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Literal
+import os
+from pathlib import Path
+
+
+# Find the project root directory (where .env is located)
+def find_project_root():
+    """Find project root by looking for .env file"""
+    current = Path(__file__).resolve()
+
+    # Go up from backend/app/config.py to project root
+    # backend/app/config.py -> backend/app -> backend -> project_root
+    project_root = current.parent.parent.parent
+
+    return project_root
+
+
+class Settings(BaseSettings):
+    """Application settings with environment variable loading"""
+
+    # LLM Provider
+    LLM_PROVIDER: Literal["groq", "openai"] = "openai"
+
+    # Groq Configuration (FREE - PRIMARY)
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL_NAME: str = "llama-3.3-70b-versatile"
+
+    # OpenAI Configuration (BACKUP)
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL_NAME: str = "gpt-4o-mini"
+
+    # Database
+    DATABASE_URL: str = ""
+
+    # Chroma DB
+    CHROMA_URL: str = "http://localhost:8001"
+    CHROMA_PERSIST_DIR: str = ""
+
+    # System Settings
+    MAX_RETRIES: int = 3
+    QUERY_TIMEOUT: int = 30
+
+    model_config = SettingsConfigDict(
+        env_file=str(find_project_root() / ".env"),
+        case_sensitive=True,
+        extra="ignore",
+    )
+
+
+# Global settings instance
+settings = Settings()
+
+
+# ─────────────────────────────────────────────────────────────
+# SCHEMA PROFILES
+# Single source of truth for multi-schema support.
+# Maps schema_name → db_url, pg_schema, collection_name.
+# Add new schemas here only — no changes to agent code needed.
+# ─────────────────────────────────────────────────────────────
+import json
+
+_profiles_path = Path(__file__).parent / "schema_profiles.json"
+SCHEMA_PROFILES = json.loads(_profiles_path.read_text())
+
+# Inject db_url at runtime — not stored in JSON
+for _name, _profile in SCHEMA_PROFILES.items():
+    _profile["db_url"] = settings.DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://")
+
+DEFAULT_SCHEMA = "ecommerce"
+
+
+def get_llm():
+    """
+    Factory function to get the configured LLM
+    Returns either Groq or OpenAI based on LLM_PROVIDER setting
+    """
+    if settings.LLM_PROVIDER == "groq":
+        from langchain_groq import ChatGroq
+        return ChatGroq(
+            model=settings.GROQ_MODEL_NAME,
+            api_key=settings.GROQ_API_KEY,
+            temperature=0,
+        )
+    else:  # openai
+        from langchain_openai import ChatOpenAI
+        return ChatOpenAI(
+            model=settings.OPENAI_MODEL_NAME,
+            api_key=settings.OPENAI_API_KEY,
+            temperature=0,
+            top_p=1,
+        )
+
+
+# Quick test if running directly
+if __name__ == "__main__":
+    print(f"LLM Provider: {settings.LLM_PROVIDER}")
+    print(f"Groq Model: {settings.GROQ_MODEL_NAME}")
+    print(f"Database configured: {bool(settings.DATABASE_URL)}")
+    print(f"Chroma: {settings.CHROMA_URL}")
+    print(f".env file location: {find_project_root() / '.env'}")
+    print("\nSchema Profiles:")
+    for name, profile in SCHEMA_PROFILES.items():
+        print(f"  {name}: pg_schema={profile['pg_schema']}, collection={profile['collection_name']}")
